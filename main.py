@@ -17,6 +17,7 @@ def main():
     clock = pygame.time.Clock()
     dt = 0
     pygame.init()
+    score = 0
 
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
@@ -51,6 +52,7 @@ def main():
 
         for asteroid in asteroids:
             if asteroid.hit(player):
+                print(f"You scored: {score}")
                 sys.exit("Game Over!")
 
         for asteroid in asteroids:
@@ -58,6 +60,7 @@ def main():
                 if asteroid.hit(shot):
                     asteroid.split()
                     shot.kill()
+                    score += 1
 
 
 if __name__ == "__main__":
