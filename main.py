@@ -1,23 +1,30 @@
 import pygame
 import sys
+import os
 
 from constants import SCREEN_WIDTH, SCREEN_HEIGHT
 from player import Player
 from asteroid import Asteroid
 from asteroidfield import AsteroidField
 from projectile import Shot, shot_group
+from scoring import print_high_scores, update_high_scores
 
 
 BLACK = (0, 0, 0)
 FPS = 60
+STARTING_SCORE = 0
+ASTEROID_KILL_SCORE = 1
 
 
 def main():
+    os.system('cls' if os.name == 'nt' else 'clear')
     print("Starting Asteroids!")
+    name = input("What is your name?\n").strip()
+
     clock = pygame.time.Clock()
     dt = 0
     pygame.init()
-    score = 0
+    score = STARTING_SCORE
 
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
@@ -53,6 +60,8 @@ def main():
         for asteroid in asteroids:
             if asteroid.hit(player):
                 print(f"You scored: {score}")
+                update_high_scores(name, score)
+                print_high_scores()
                 sys.exit("Game Over!")
 
         for asteroid in asteroids:
@@ -60,7 +69,7 @@ def main():
                 if asteroid.hit(shot):
                     asteroid.split()
                     shot.kill()
-                    score += 1
+                    score += ASTEROID_KILL_SCORE
 
 
 if __name__ == "__main__":
